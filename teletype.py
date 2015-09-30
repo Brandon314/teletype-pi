@@ -11,8 +11,8 @@ import threading
 
 
 gpio = webiopi.GPIO
-PWR_RLY          = 7 # GPIO Chan used for power
-DATA_RLY         = 8 # GPIO Chan used for data
+PWR_RLY          = 2 # GPIO Chan used for power
+DATA_RLY         = 24 # GPIO Chan used for data
 gpio8period      = 20 # period of 1 bit to achieve 45bps
 
 MotorTimerVal         = 2 # seconds for motor to stay on after last character
@@ -396,17 +396,17 @@ def tx_ctl(c):
     txbaudot('11011') # shift up
     txbaudot('00101')
     txbaudot('11111') # shift down
-    txbaudot('01000') # cr
-    txbaudot('00100') # space
-    txbaudot('00100')
-    txbaudot('00100')
-    txbaudot('00100')
-    txbaudot('00100')
-    txbaudot('00100')
-    txbaudot('00100')
-    txbaudot('00100')
-    txbaudot('01000') # cr
-    ColumnCurrentPosition = 0
+    #txbaudot('01000') # cr
+    #txbaudot('00100') # space
+    #txbaudot('00100')
+    #txbaudot('00100')
+    #txbaudot('00100')
+    #txbaudot('00100')
+    #txbaudot('00100')
+    #txbaudot('00100')
+    #txbaudot('00100')
+    #txbaudot('01000') # cr
+    #ColumnCurrentPosition = 0
   elif (c == 'null'):
     txbaudot('00000')
   elif (c == 'space'):
