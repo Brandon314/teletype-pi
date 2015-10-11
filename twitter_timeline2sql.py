@@ -8,7 +8,7 @@ import os
 
 Q = sys.argv[1:]
 
-sqlite3file='/home/pi/junk_code/tweepy.db'
+sqlite3file='/home/pi/teletype-pi/tweepytest.db'
 
 CONSUMERKEY = os.environ["CONSUMERKEY"]
 CONSUMERSECRET = os.environ['CONSUMERSECRET']
