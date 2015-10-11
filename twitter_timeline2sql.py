@@ -69,7 +69,3 @@ streamer.userstream(_with='followings', async=False) #async=True = failure
 
 
 
-#myStreamListener = MyStreamListener()
-#myStream = tweepy.Stream(auth = api.auth, listener())
-
-print('Filtering the public timeline for "%s"' % (' '.join(sys.argv[1:]),), file=sys.stderr)
