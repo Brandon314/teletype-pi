@@ -8,13 +8,16 @@ import os
 
 Q = sys.argv[1:]
 
+#The d-base file of choice
 sqlite3file='/home/pi/teletype-pi/tweepytest.db'
 
+#Grabbing auth values stored in environment variables (for security)
 CONSUMERKEY = os.environ["CONSUMERKEY"]
 CONSUMERSECRET = os.environ['CONSUMERSECRET']
 ACCESSTOKEN = os.environ['ACCESSTOKEN']
 ACCESSTOKENSECRET = os.environ['ACCESSSECRET']
 
+#Tweepy authorization into Twitter API
 auth = tweepy.OAuthHandler(CONSUMERKEY, CONSUMERSECRET)
 auth.set_access_token(ACCESSTOKEN, ACCESSTOKENSECRET)
 api = tweepy.API(auth)
@@ -42,25 +45,25 @@ class StreamListener(tweepy.StreamListener):
             con.commit()
 
         except Exception as e:
-            #print(>> sys.stderr, 'Encountered Exception:', e)
             print('Encountered Expception:', e, file=sys.stderr)
             pass
 
     def on_error(self, status_code):
-        #print(>> sys.stderr, 'Encountered error with status code:', status_code)
         print('Encountered error with status code:', status_code, file=sys.stderr)
         return True # Don't kill the stream
 
     def on_timeout(self):
-        #print(>> sys.stderr, 'Timeout...')
         print('Timeout...', file=sys.stderr)
         return True # Don't kill the stream
 
-#streaming_api = tweepy.streaming.Stream(auth, MyStreamListener(), timeout=60)
+
 
 l = StreamListener()
 streamer = tweepy.Stream(auth=auth, listener=l)
-streamer.userstream(_with='followings', async=False)
+print('Filtering the public timeline for "%s"' % (' '.join(sys.argv[1:]),), file=sys.stderr)
+
+#Sets up userstream
+streamer.userstream(_with='followings', async=False) #async=True = failure
 
 
 
@@ -69,7 +72,4 @@ streamer.userstream(_with='followings', async=False)
 #myStreamListener = MyStreamListener()
 #myStream = tweepy.Stream(auth = api.auth, listener())
 
-#print(>> sys.stderr, 'Filtering the public timeline for "%s"' % (' '.join(sys.argv[1:]),))
 print('Filtering the public timeline for "%s"' % (' '.join(sys.argv[1:]),), file=sys.stderr)
-
-#myStream.userstream("with=following")
