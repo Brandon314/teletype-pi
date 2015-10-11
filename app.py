@@ -32,7 +32,7 @@ def baud_rate_inc():
   """
   global gpio8period
   gpio8period = gpio8period + 1
-  print repr(gpio8period)
+  print(repr(gpio8period))
 
 def baud_rate_dec():
   """
@@ -41,7 +41,7 @@ def baud_rate_dec():
   global gpio8period
   if (gpio8period > 1):
     gpio8period = gpio8period - 1
-  print repr(gpio8period)
+  print(repr(gpio8period))
 
 
 def tty_start():
@@ -67,7 +67,7 @@ def tty_tx_str(s):
   """
   transmits a given string. URI decoding performed
   """
-  print repr(s)
+  print(repr(s))
   teletype.tx_str(s)
 
 def tty_tx_ctl(c):
@@ -142,7 +142,7 @@ if __name__ == "__main__":
 
   teletype.init(webiopi.GPIO)
 
-  server = webiopi.Server(port=80,coap_port=None)
+  server = webiopi.Server(port=80,coap_port=0)
 
   #server.host="192.168.42.1"
 

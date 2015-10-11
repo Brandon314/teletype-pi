@@ -8,9 +8,12 @@ import time
 import binascii
 import urllib # for url unquote
 import threading
+import RPi.GPIO
+
 
 
 gpio = webiopi.GPIO
+
 PWR_RLY          = 2 # GPIO Chan used for power
 DATA_RLY         = 24 # GPIO Chan used for data
 gpio8period      = 20 # period of 1 bit to achieve 45bps
@@ -186,16 +189,19 @@ needs_shift_up = (
 )
 
 
+
+
+
 def one_sec_chores():
   """
   Called 1x as separate thread to do things like time out motor
   """
   global MotorTimerCtr, MotorTimerVal, MotorTimerThread
-  #print "one_sec_chores() MotorTimerCtr: %d" % MotorTimerCtr
+  #print("one_sec_chores() MotorTimerCtr: %d" % MotorTimerCtr)
   if (MotorTimerCtr):
     MotorTimerCtr = MotorTimerCtr - 1
     if (not MotorTimerCtr):
-      print "Motor Timer Done"
+      print("Motor Timer Done")
       motor_stop()
 
   # restart ourselves if parent thread is still alive
@@ -205,7 +211,7 @@ def one_sec_chores():
         MotorTimerThread = threading.Timer(1.0,one_sec_chores)
         MotorTimerThread.start()
       else:
-        print "one_sec_chores(): Parent process died. Exiting."
+        print("one_sec_chores(): Parent process died. Exiting.")
   
 
 def init(gpio_arg):
@@ -241,14 +247,14 @@ def motor_start(time_secs=0):
   global MotorTimerCtr, MotorTimerVal
 
   if (not MotorTimerCtr) :
-    print "Motor start"
+    print("Motor start")
     gpio.output(PWR_RLY,gpio.LOW)
     time.sleep(.25)
   
   if not time_secs:
     MotorTimerCtr = MotorTimerVal
   else:
-    print "motor_start(): non-standard timeout value: %d" % time_secs
+    print("motor_start(): non-standard timeout value: %d" % time_secs)
     MotorTimerCtr = time_secs
 
 def motor_stop():
@@ -269,15 +275,17 @@ def test(s):
     """
     test mapping tables by attempt to print out all possible codes
     """
-    print 'allpats'
+    print('allpats')
     for i in range(0,256):
-      if (ascii_to_baudot_char.has_key(chr(i))): # if first reduce mapping table has key
+      #if (ascii_to_baudot_char.has_key(chr(i))): # if first reduce mapping table has key
+      if (chr(i) in ascii_to_baudot_char): #python3 version of above line
         a = ascii_to_baudot_char[chr(i)]
-        #print 'ascii_to_baudot_char(%d): %s' % (i,a)
-        if (ascii_to_binstr.has_key(a)): # and 2nd reduce mapping table has key
+        #print('ascii_to_baudot_char(%d): %s' % (i,a))
+        #if (ascii_to_binstr.has_key(a)): # and 2nd reduce mapping table has key
+        if (a in ascii_to_binstr): #python3 version of above line
           b = ascii_to_binstr[a]
           if (b != '00000'):
-            print 'test(%s)' % (a)
+            print('test(%s)' % (a))
             txbaudot(b)
    
 def txbaudot(c):
@@ -296,16 +304,18 @@ def txbin(s):
   txbaudot(s)
 
 def tx_keycode(s):
-  print 'tx_keycode(%s)' % (s)
+  print('tx_keycode(%s)' % (s))
   k = int(s)
-  if (ascii_to_baudot_char.has_key(chr(k))):
+  #if (ascii_to_baudot_char.has_key(chr(k))):
+  if (chr(k) in ascii_to_baudot_char):
       a = ascii_to_baudot_char[chr(k)]
-      #print 'ascii_to_baudot_char(%d): %s' % (i,a)
-      if (ascii_to_binstr.has_key(a)): # and 2nd reduce mapping table has key
+      #print('ascii_to_baudot_char(%d): %s' % (i,a))
+      #if (ascii_to_binstr.has_key(a)): # and 2nd reduce mapping table has key
+      if (a in ascii_to_binstr):
         b = ascii_to_binstr[a]
-        print 'tx_keycode() %d (%s) -> (%s)' % (k,chr(k),b)
+        print('tx_keycode() %d (%s) -> (%s)' % (k,chr(k),b))
         if (b != '00000'):
-          print 'tx_keycode(%s)' % (b)
+          print('tx_keycode(%s)' % (b))
           txbaudot(b)
 
 shifted = False
@@ -317,10 +327,10 @@ def update_column_position():
   global ColumnCurrentPosition, ColumnMax
   ColumnCurrentPosition = ColumnCurrentPosition + 1
   if ColumnCurrentPosition > ColumnMax:
-    print "update_column_position(): col 0"
+    print("update_column_position(): col 0")
     tx_ctl('cr')
     tx_ctl('lf')
-    ColumnCurrentPosition = 0; print "column reset to 0"
+    ColumnCurrentPosition = 0; print("column reset to 0")
 
 def shift_up():
   """
@@ -345,13 +355,15 @@ def tx_ascii_chr(c):
   """
   send an ascii character
   """
-  if (ascii_to_baudot_char.has_key(c)):
+  #if (ascii_to_baudot_char.has_key(c)):
+  if (c in ascii_to_baudot_char):
       a = ascii_to_baudot_char[c]
-      #print 'ascii_to_baudot_char(%d): %s' % (i,a)
-      if (ascii_to_binstr.has_key(a)): # and 2nd reduce mapping table has key
+      #print('ascii_to_baudot_char(%d): %s' % (i,a))
+      #if (ascii_to_binstr.has_key(a)): # and 2nd reduce mapping table has key
+      if (a in ascii_to_binstr):
         b = ascii_to_binstr[a]
         if (b != '00000'):
-          #print 'tx_ascii_chr(%s)' % (b)
+          #print('tx_ascii_chr(%s)' % (b))
           if (a in needs_shift_up):
             shift_up()
           else:
@@ -371,9 +383,9 @@ def tx_str(s):
   """
   transmit an ascii string
   """
-  de_uried_str = urllib.unquote(s)
+  de_uried_str = urllib.parse.unquote(s)
   for i in range(len(de_uried_str)):
-    print '[%s]' % de_uried_str[i]
+    print('[%s]' % de_uried_str[i])
     tx_ascii_chr(de_uried_str[i])
 
 
@@ -382,7 +394,7 @@ def tx_ctl(c):
   transmit a control code 'lf' = line feed, 'cr' = carriage return, etc.
   """
   global ColumnCurrentPosition
-  print "tx_ctl(%s)" % c
+  print("tx_ctl(%s)" % c)
   if (c == 'cr'):
     txbaudot('01000')
     ColumnCurrentPosition = 0
@@ -413,5 +425,5 @@ def tx_ctl(c):
     txbaudot('00100')
     update_column_position()
   else:
-    print 'no action'
+    print('no action')
 
