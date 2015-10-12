@@ -18,7 +18,7 @@ PWR_RLY          = 2 # GPIO Chan used for power
 DATA_RLY         = 24 # GPIO Chan used for data
 gpio8period      = 20 # period of 1 bit to achieve 45bps
 
-MotorTimerVal         = 2 # seconds for motor to stay on after last character
+MotorTimerVal         = 10 # seconds for motor to stay on after last character
 MotorTimerCtr         = 0 # counts down for motor
 MotorTimerThread      = None # motor timer taken care of on a separate thread
 ColumnCurrentPosition = 1
@@ -249,7 +249,7 @@ def motor_start(time_secs=0):
   if (not MotorTimerCtr) :
     print("Motor start")
     gpio.output(PWR_RLY,gpio.LOW)
-    time.sleep(.25)
+    time.sleep(.5)
   
   if not time_secs:
     MotorTimerCtr = MotorTimerVal

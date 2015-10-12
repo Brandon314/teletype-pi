@@ -9,10 +9,10 @@ import os
 Q = sys.argv[1:]
 
 #The d-base file of choice
-sqlite3file='/home/pi/teletype-pi/tweepytest.db'
+sqlite3file='tweepytest.db'
 
 #Grabbing auth values stored in environment variables (for security)
-CONSUMERKEY = os.environ["CONSUMERKEY"]
+CONSUMERKEY = os.environ['CONSUMERKEY']
 CONSUMERSECRET = os.environ['CONSUMERSECRET']
 ACCESSTOKEN = os.environ['ACCESSTOKEN']
 ACCESSTOKENSECRET = os.environ['ACCESSSECRET']
@@ -26,22 +26,25 @@ print("Successful auth for:", api.me().name) #print name of account if auth succ
 
 con = lite.connect(sqlite3file)
 cur = con.cursor()
-cur.execute("CREATE TABLE TWEETS(txt text, author text, created int, source text)")
+#Uncomment to create new d-base
+#cur.execute("CREATE TABLE TWEETS(txt text, author text, created int, source text)")
 
 class StreamListener(tweepy.StreamListener):
 
     def on_status(self, status):
 
         try:
-            print("%s\t%s\t%s\t%s" % (status.text, 
+            print("%s\t%s\t%s\t%s\t%s" % (status.text, 
                                       status.author.screen_name, 
                                       status.created_at, 
-                                      status.source,))
+                                      status.source,
+                                      status.id))
 
-            cur.execute("INSERT INTO TWEETS VALUES(?, ?, ?, ?)", (status.text, 
+            cur.execute("INSERT INTO TWEETS VALUES(?, ?, ?, ?, ?)", (status.text, 
                                                             status.author.screen_name, 
                                                             status.created_at, 
-                                                            status.source))
+                                                            status.source,
+                                                            status.id))
             con.commit()
 
         except Exception as e:
