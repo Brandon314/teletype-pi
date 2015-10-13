@@ -156,7 +156,7 @@ if __name__ == "__main__":
   server.addMacro(tty_tx_ctl)
   server.addMacro(tty_test)
 
-  #webiopi.runLoop(loop)  # never exits 
+  webiopi.runLoop(loop)  # never exits 
 
   server.stop() # Cleanly stop the server
 

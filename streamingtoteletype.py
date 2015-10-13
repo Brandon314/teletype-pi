@@ -28,6 +28,8 @@ while True:
       print("deleted tweet with ID = ", tid)
       conn.commit() #save our changes to dbase
       tprint.tty_tx_str(t) #send string to app for printing to tty
+      tprint.tty_tx_ctl('cr')
+      tprint.tty_tx_ctl('lf')
       
    else:
       print("database empty")
