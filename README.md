@@ -9,7 +9,18 @@ Raspberry Pi OS "Jessie"
 python3.4
 Install WebIOPi (using version WebIOPi-0.7.1)
 
-Run 'python3 app.py' to start.
+For Play or Direct Web Input to Teletype:
+
+Run 'python3 app.py' to start the WebIOPi fronting service (navigate to your pi's IP address to view).
+
+
+For Streaming Twitter to Teletype:
+
+Run 'python3 twitter_timeline2sql.py' to fire up the twitter parsing program.
+
+Run 'python3 streamingtoteletype.py' to fire up the d-base to printer program.
+
+
 
 Note: python (python2) and webiopi don'y play nice and  have a significant issue (webiopi will not install properly).
 After fighting this for hours, decided to just move to python3 (which required editing the code for new syntax compatiblity).

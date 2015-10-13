@@ -1,7 +1,7 @@
 import sqlite3
 import teletype
 import time
-import webiopi
+#import webiopi
 import tprint
 
 conn = sqlite3.connect('tweepytest.db')
