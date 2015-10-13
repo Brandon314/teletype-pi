@@ -2,7 +2,7 @@ import sqlite3
 import teletype
 import time
 import webiopi
-import app
+import tprint
 
 conn = sqlite3.connect('tweepytest.db')
 print("Opened database successfully")
@@ -27,7 +27,7 @@ while True:
       conn.execute("DELETE from TWEETS where id=?", (tid,)) #we got what we wanted, time to say goodbye
       print("deleted tweet with ID = ", tid)
       conn.commit() #save our changes to dbase
-      app.tty_tx_str(t) #send string to app for printing to tty
+      tprint.tty_tx_str(t) #send string to app for printing to tty
       
    else:
       print("database empty")

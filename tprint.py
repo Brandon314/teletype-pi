@@ -133,31 +133,31 @@ def loop():
   """
 
  
-if __name__ == "__main__":
-  """
-  execution starts here
-  """
-
-  # webiopi.setDebug() # be verbose on stderr
-
-  teletype.init(webiopi.GPIO)
-
-  server = webiopi.Server(port=80,coap_port=0)
-
-  #server.host="192.168.42.1"
-
-  # add the macros which the browser will call
-  server.addMacro(baud_rate_inc)
-  server.addMacro(baud_rate_dec)
-  server.addMacro(tty_start)
-  server.addMacro(tty_stop)
-  server.addMacro(tty_tx)
-  server.addMacro(tty_tx_str)
-  server.addMacro(tty_tx_ctl)
-  server.addMacro(tty_test)
-
-  #webiopi.runLoop(loop)  # never exits 
-
-  server.stop() # Cleanly stop the server
+#if __name__ == "__main__":
+#  """
+#  execution starts here
+#  """
+#
+#  # webiopi.setDebug() # be verbose on stderr
+#
+#  teletype.init(webiopi.GPIO)
+#
+#  server = webiopi.Server(port=80,coap_port=0)
+#
+#  #server.host="192.168.42.1"
+#
+#  # add the macros which the browser will call
+#  server.addMacro(baud_rate_inc)
+#  server.addMacro(baud_rate_dec)
+#  server.addMacro(tty_start)
+#  server.addMacro(tty_stop)
+#  server.addMacro(tty_tx)
+#  server.addMacro(tty_tx_str)
+#  server.addMacro(tty_tx_ctl)
+#  server.addMacro(tty_test)
+#
+#  #webiopi.runLoop(loop)  # never exits 
+#
+#  server.stop() # Cleanly stop the server
 
   teletype.motor_stop() # cleanly stop the tty
