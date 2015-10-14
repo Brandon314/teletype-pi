@@ -22,6 +22,9 @@ Run 'python3 streamingtoteletype.py' to fire up the d-base to printer program.
 
 
 
+Run 'sudo python3 detection.py' to fire up the rx mode (which echos back to teletype)
+
+
 Note: python (python2) and webiopi don'y play nice and  have a significant issue (webiopi will not install properly).
 After fighting this for hours, decided to just move to python3 (which required editing the code for new syntax compatiblity).
 
