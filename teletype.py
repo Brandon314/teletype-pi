@@ -161,6 +161,10 @@ ascii_to_binstr = {
   ' '  : '00100'
 }
 
+#swaps table data to generate binsrt_to_ascii for teletype tx
+binstr_to_ascii = { ascii_to_binstr[k]: k for k in ascii_to_binstr}
+
+
 needs_shift_up = (
   '1',
   '2',
