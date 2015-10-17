@@ -7,14 +7,16 @@ from teletype import txbaudot
 
 GPIO.setmode(GPIO.BOARD) #sets GPIO numbering system to BOARD pin numbers versus BCM numbering
 
-GPIO.setup(23, GPIO.IN)
+key = 3
 
-#print(GPIO.input(23))
-print(1 - GPIO.input(23))
-#b = (1 - GPIO.input(23))
+GPIO.setup(key, GPIO.IN)
+
+#print(GPIO.input(key))
+print(1 - GPIO.input(key))
+#b = (1 - GPIO.input(key))
 #print(b)
 
-GPIO.add_event_detect(23, GPIO.RISING, bouncetime=130) #add rising edge detection on GPIO 23
+GPIO.add_event_detect(key, GPIO.RISING, bouncetime=130) #add rising edge detection on GPIO 23
 
 a = []
 d = 0.020
@@ -92,12 +94,12 @@ binstr_to_asciifigs = { asciifigs_to_binstr[k]: k for k in asciifigs_to_binstr}
 
 
 def readbit(): #read a single bit
-   return (1 - GPIO.input(23)) #read dat bit
+   return (1 - GPIO.input(key)) #read dat bit
    
 while True:
    a = [] #blank the list
    n = 5 #reset the count
-   if GPIO.event_detected(23):
+   if GPIO.event_detected(key):
          time.sleep(0.035) #center up on start bit
          while n > 0:
             b = readbit()

@@ -14,8 +14,8 @@ import RPi.GPIO
 
 gpio = webiopi.GPIO
 
-PWR_RLY          = 2 # GPIO Chan used for power
-DATA_RLY         = 24 # GPIO Chan used for data
+PWR_RLY          = 5 # GPIO Chan used for power
+DATA_RLY         = 3  # GPIO Chan used for data
 gpio8period      = 20 # period of 1 bit to achieve 45bps
 
 MotorTimerVal         = 10 # seconds for motor to stay on after last character
