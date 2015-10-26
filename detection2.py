@@ -4,7 +4,14 @@ import os
 from teletype import tx_ctl
 from teletype import tx_ascii_chr
 from teletype import txbaudot
-from threading import Thread
+#from threading import Thread
+from multiprocessing import Pool
+
+
+#sets up the asyncronous process(es)
+if __name__ == '__main__':
+    pool = Pool(processes=1) 
+
 
 GPIO.setmode(GPIO.BOARD) #sets GPIO numbering system to BOARD pin numbers versus BCM numbering
 
@@ -92,8 +99,6 @@ binstr_to_asciifigs = { asciifigs_to_binstr[k]: k for k in asciifigs_to_binstr}
 
 
 
-
-
 def readbit(): #read a single bit
    return (1 - GPIO.input(key)) #read dat bit
 
@@ -116,31 +121,24 @@ while True:
          print(baudot)
          if (baudot == '11111'):
             s = 0 #ltrs mode
-            thread = Thread(target = teletype_tx, args = (baudot, ))
-            thread.start()
             print("ltrs mode")
             #txbaudot(baudot)
          elif (baudot == '11011'):
             s = 1 #figs mode
-            thread = Thread(target = teletype_tx, args = (baudot, ))
-            thread.start()
             print("figs mode")
             #txbaudot(baudot)
          elif (s == 0 and baudot in binstr_to_asciiltrs):
             c = binstr_to_asciiltrs[baudot]
             #tx_ascii_chr(c)
-            thread = Thread(target = teletype_tx, args = (baudot, ))
-            thread.start()
             print(c)
             #txbaudot(baudot)
          elif (s == 1 and baudot in binstr_to_asciifigs):
             c = binstr_to_asciifigs[baudot]
             #tx_ascii_chr(c)
-            thread = Thread(target = teletype_tx, args = (baudot, ))
-            thread.start()
             print(c)
             #txbaudot(baudot)
          else:
-            thread = Thread(target = teletype_tx, args = (baudot, ))
-            thread.start()
+            print(baudot)
             #txbaudot(baudot)
+         pool.apply_async(txbaudot, [baudot]) #execute the async process to transmit baudots out
+         
